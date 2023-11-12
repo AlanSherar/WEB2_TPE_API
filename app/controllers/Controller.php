@@ -89,4 +89,29 @@ class Controller
         $msj = $this->prepareMensaje("Se eliminó con éxito el recurso con ID : $id.");
         $this->view->response($msj, 200);
     }
+
+    public function getPaginado($params = []){
+
+        if (empty($params)) {
+            // Verifica si se solicita paginación
+            $page = isset($_GET['page']) ? intval($_GET['page']) : 1; // Página actual
+            $per_page = isset($_GET['per_page']) ? intval($_GET['per_page']) : 10; // Elementos por página
+            $sort_by = isset($_GET['sort_by']) ? $_GET['sort_by'] : 'ID';
+            $order = isset($_GET['order']) ? $_GET['order'] : 'asc';
+
+            if (($order == 'ASC' || $order == 'DESC') && ($sort_by == 'ID' || $sort_by == 'name' || $sort_by == 'season')) {
+                $categories = $this->model->getCategoryPaginados($sort_by, $order, $page, $per_page);
+                return $this->view->response($categories, 200);
+            } else {
+                return $this->view->response(['no existe el orden'], 200);
+            }
+        } else {
+            $category = $this->model->getCategory($params[':ID']);
+            if (!empty($category)) {
+                return $this->view->response($category, 200);
+            } else {
+                return $this->view->response(['No existe la categoria con id = ' . $params[':ID']], 404);
+            }
+        }
+    }
 }

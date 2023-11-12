@@ -30,6 +30,5 @@ $router->addRoute("generos", "POST", "GenerosController", "post");
 
 $router->addRoute("generos/:id", "PUT", "GenerosController", "put");
 
-$data = json_decode(' {"hola": "esto", "hola2": "esto2", "hola3": "esto3" } ');
 $router->route($_GET["resource"], $_SERVER['REQUEST_METHOD']);
 ?>
