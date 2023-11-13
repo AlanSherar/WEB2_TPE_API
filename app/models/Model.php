@@ -20,7 +20,7 @@
         $query = $this->db->prepare("SELECT $subrecurso FROM $this->table WHERE id = ?");
         $query->execute([$id]);
         $data = $query->fetch(PDO::FETCH_OBJ);
-
+        
         return $data;
     }
     

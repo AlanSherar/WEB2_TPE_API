@@ -30,11 +30,11 @@ class JuegosController extends Controller
 
         if (!$res) {
             $msj = $this->prepareMensaje("Se produjo un error al intentar agregar.");
-            $this->view->response($msj, 404);
+            $this->view->response($msj, 500);
             return;
         }
 
-        $msj = $this->prepareMensaje("Se agregó con éxito el recurso con id = $res.");
+        $msj = $this->prepareMensaje("Se agregó con éxito el recurso.");
         $this->view->response($msj, 201);
     }
 

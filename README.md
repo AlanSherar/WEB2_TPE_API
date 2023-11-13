@@ -22,7 +22,7 @@ Si se pasan tanto ASC(tambien valido asc) como DESC(tambien valido desc), toma p
 Se puede filtrar por el precio. 
 Se buscará todos los juegos que su precio sea menor que el recibido por $_GET:
 
- -- GET : juegos?filtro={float}
+ -- GET : juegos?precio_max={float}
 
 Listar un juego por su ID:
 

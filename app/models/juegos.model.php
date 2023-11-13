@@ -18,13 +18,13 @@ class JuegosModel extends Model
             "lanzamiento"]);
     }
 
-    function getAll($subrecurso = "*", $filtro = "", $order_by, $order = "")
+    function getAll($subrecurso = "*", $filtro = "", $order_by = "", $order = "")
     {
         $subrecurso = in_array($subrecurso, $this->columns, true) ? $subrecurso : "*";
         
         $order_by = in_array($order_by, $this->columns, true) ? $order_by : $this->columns[0];
         
-        $order = $order == "ASC" ? "ASC" : "DESC";
+        $order = $order == "DESC" ? "DESC" : "ASC";
         
         if($filtro != ""){
             $query = $this->db->prepare("SELECT $subrecurso FROM $this->table WHERE precio <= ? ORDER BY $order_by $order");
@@ -47,8 +47,7 @@ class JuegosModel extends Model
     public function insert($data)
     {
         $query = $this->db->prepare('INSERT INTO ' . $this->table . ' (nombre, precio, genero, desarrolladora, micro_transacciones, lanzamiento) values (?,?,?,?,?,?)');
-        $query->execute([$data->nombre, $data->precio, $data->genero, $data->desarrolladora, $data->micro_transacciones, $data->lanzamiento]);
-        return $this->db->lastInsertId();
+        return $query->execute([$data->nombre, $data->precio, $data->genero, $data->desarrolladora, $data->micro_transacciones, $data->lanzamiento]);
     }
 
     public function putById($id, $data)
