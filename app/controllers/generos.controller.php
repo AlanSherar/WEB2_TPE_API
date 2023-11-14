@@ -21,8 +21,8 @@ class GenerosController extends Controller
 
         $data = $this->getData();
 
-        if (empty($data->nombre) || empty($data->precio) || empty($data->genero) || empty($data->desarrolladora) || empty($data->micro_transacciones) || empty($data->lanzamiento)) {
-            $msj = $this->prepareMensaje("Los datos necesarios no están completos.");
+        if (empty($data->nombre)) {
+            $msj = $this->prepareMensaje("Los datos necesarios no llegaron completos.");
             $this->view->response($msj, 400);
             return;
         }
@@ -31,11 +31,11 @@ class GenerosController extends Controller
 
         if (!$res) {
             $msj = $this->prepareMensaje("Se produjo un error al intentar agregar.");
-            $this->view->response($msj, 404);
+            $this->view->response($msj, 500);
             return;
         }
 
-        $msj = $this->prepareMensaje("Se agregó con éxito el recurso con id = $res.");
+        $msj = $this->prepareMensaje("Se ha insertado correctamente el recurso con id = $res.");
         $this->view->response($msj, 201);
     }
 
@@ -51,7 +51,7 @@ class GenerosController extends Controller
         $data = $this->getData();
 
         if (empty($data->nombre) || empty($data->precio) || empty($data->genero) || empty($data->desarrolladora) || empty($data->micro_transacciones) || empty($data->lanzamiento)) {
-            $msj = $this->prepareMensaje("Los datos necesarios no están completos.");
+            $msj = $this->prepareMensaje("Los datos necesarios no llegaron completos.");
             $this->view->response($msj, 400);
             return;
         }
@@ -65,7 +65,7 @@ class GenerosController extends Controller
             return;
         }
 
-        $msj = $this->prepareMensaje("Se modificó con éxito el recurso con ID : $id.");
+        $msj = $this->prepareMensaje("Se ha modificado el recurso con ID : $id.");
         $this->view->response($msj, 200);
     }
 

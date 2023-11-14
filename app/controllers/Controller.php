@@ -60,7 +60,7 @@ class Controller
             
         // si no encontró el recurso
         if (!$data) {
-            $msj = $this->prepareMensaje("No se encontró el recurso con ID = $id.");
+            $msj = $this->prepareMensaje("No se ha encontrado el recurso con ID = $id.");
             $this->view->response($msj, 404);
             return;
         }
@@ -70,8 +70,7 @@ class Controller
 
     public function delete($params = [])
     {
-
-        if (empty($params) || $params[":id"] != "") {
+        if (empty($params) || $params[":id"] == "") {
             $msj = $this->prepareMensaje("Hace falta un id.");
             $this->view->response($msj, 400);
             return;
@@ -82,13 +81,12 @@ class Controller
 
         if (!$res) {
             $msj = $this->prepareMensaje("Se produjo un error al intentar eliminar. ID : $id.");
-            $this->view->response($msj, 404);
+            $this->view->response($msj, 500);
             return;
         }
 
-        $msj = $this->prepareMensaje("Se eliminó con éxito el recurso con ID : $id.");
+        $msj = $this->prepareMensaje("Se ha eliminado correctamente el recurso con ID : $id.");
         $this->view->response($msj, 200);
     }
-
    
 }

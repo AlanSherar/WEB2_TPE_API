@@ -27,8 +27,13 @@
     abstract function getAll($subrecurso = "*", $filtro = "", $order_by, $order = "");
     
     public function deleteById($id){
-        $query = $this->db->prepare('DELETE FROM '.$this->table.' WHERE id = ?');
-        return $query->execute([$id]);
+
+        try {
+            $query = $this->db->prepare('DELETE FROM '.$this->table.' WHERE id = ?');
+            return $query->execute([$id]);
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
     abstract public function insert($data);

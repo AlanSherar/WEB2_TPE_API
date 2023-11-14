@@ -6,30 +6,34 @@ class JuegosModel extends Model
 {
 
     public function __construct()
-    
+
     {
-        parent::__construct("juegos",
-            ["id",
-            "nombre",
-            "precio",
-            "genero",
-            "desarrolladora",
-            "micro_transacciones",
-            "lanzamiento"]);
+        parent::__construct(
+            "juegos",
+            [
+                "id",
+                "nombre",
+                "precio",
+                "genero",
+                "desarrolladora",
+                "micro_transacciones",
+                "lanzamiento"
+            ]
+        );
     }
 
     function getAll($subrecurso = "*", $filtro = "", $order_by = "", $order = "")
     {
         $subrecurso = in_array($subrecurso, $this->columns, true) ? $subrecurso : "*";
-        
+
         $order_by = in_array($order_by, $this->columns, true) ? $order_by : $this->columns[0];
-        
+
         $order = $order == "DESC" ? "DESC" : "ASC";
-        
-        if($filtro != ""){
+
+        if ($filtro != "") {
             $query = $this->db->prepare("SELECT $subrecurso FROM $this->table WHERE precio <= ? ORDER BY $order_by $order");
             $query->execute([$filtro]);
-        }else {
+        } else {
             $query = $this->db->prepare("SELECT $subrecurso FROM $this->table ORDER BY $order_by $order");
             $query->execute();
         }
@@ -40,20 +44,32 @@ class JuegosModel extends Model
 
     public function deleteAllByGeneroId($id)
     {
-        $query = $this->db->prepare('DELETE FROM ' . $this->table . ' WHERE genero = ?');
-        return $query->execute([$id]);
+        try {
+            $query = $this->db->prepare('DELETE FROM ' . $this->table . ' WHERE genero = ?');
+            return $query->execute([$id]);
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
     public function insert($data)
     {
-        $query = $this->db->prepare('INSERT INTO ' . $this->table . ' (nombre, precio, genero, desarrolladora, micro_transacciones, lanzamiento) values (?,?,?,?,?,?)');
-        return $query->execute([$data->nombre, $data->precio, $data->genero, $data->desarrolladora, $data->micro_transacciones, $data->lanzamiento]);
+        try {
+            $query = $this->db->prepare('INSERT INTO ' . $this->table . ' (nombre, precio, genero, desarrolladora, micro_transacciones, lanzamiento) values (?,?,?,?,?,?)');
+            $query->execute([$data->nombre, $data->precio, $data->genero, $data->desarrolladora, $data->micro_transacciones, $data->lanzamiento]);
+            return $this->db->lastInsertId();
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
     public function putById($id, $data)
     {
-        $query = $this->db->prepare('UPDATE ' . $this->table . ' SET nombre = ?, precio = ?, genero = ?, desarrolladora = ?, micro_transacciones = ?, lanzamiento = ? WHERE id = ?');
-        return $query->execute([$data->nombre, $data->precio, $data->genero, $data->desarrolladora, $data->micro_transacciones, $data->lanzamiento, $id]);
+        try {
+            $query = $this->db->prepare('UPDATE ' . $this->table . ' SET nombre = ?, precio = ?, genero = ?, desarrolladora = ?, micro_transacciones = ?, lanzamiento = ? WHERE id = ?');
+            return $query->execute([$data->nombre, $data->precio, $data->genero, $data->desarrolladora, $data->micro_transacciones, $data->lanzamiento, $id]);
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 }
-?>
